@@ -55,9 +55,9 @@ namespace WarShips.Services
                     y = 0;
                 }
 
-                for (var i = x; i < x + 3; i++)
+                for (var i = x; i < iCount; i++)
                 {
-                    for (var j = y; j < y + 3; j++)
+                    for (var j = y; j < jCount; j++)
                     {
                         player.Field[i, j] = 2;
                     }
