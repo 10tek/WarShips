@@ -93,14 +93,14 @@ namespace WarShips.Services
 
         public void MoveDown(ref int x, ref int y)
         {
-            Console.SetCursorPosition(x, y < 10 ? y++ : y);
+            Console.SetCursorPosition(x, y < 10 ? ++y : y);
         }
 
         public void ControlCursor()
         {
             var x = 25;
             var y = 1;
-
+            
             Console.SetCursorPosition(25, 1);
             while (true)
             {
