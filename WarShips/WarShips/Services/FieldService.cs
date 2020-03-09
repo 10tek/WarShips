@@ -13,13 +13,21 @@ namespace WarShips.Services
             var letters = new char[] { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J' };
             for (var i = 0; i < FIELD_SIZE; i++)
             {
-                Console.SetCursorPosition(i * 2 + 3, 0);
+                Console.SetCursorPosition(i + 2, 0);
                 Console.Write(letters[i]);
-                Console.SetCursorPosition(i * 2 + 27, 0);
+                Console.SetCursorPosition(i + 2, 11);
+                Console.Write(letters[i]);
+                Console.SetCursorPosition(i + 25, 0);
+                Console.Write(letters[i]);
+                Console.SetCursorPosition(i + 25, 11);
                 Console.Write(letters[i]);
                 Console.SetCursorPosition(1, i + 1);
                 Console.Write(i);
-                Console.SetCursorPosition(22, i + 1);
+                Console.SetCursorPosition(12, i + 1);
+                Console.Write(i);
+                Console.SetCursorPosition(24, i + 1);
+                Console.Write(i);
+                Console.SetCursorPosition(35, i + 1);
                 Console.Write(i);
             }
         }
