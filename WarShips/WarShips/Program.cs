@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Text;
 using WarShips.Services;
 
 namespace WarShips
@@ -8,7 +9,10 @@ namespace WarShips
     {
         static void Main(string[] args)
         {
-            new FieldService().ShowField();
+
+            var field = new FieldService();
+            field.ShowField();
+            field.ControlCursor();
             Console.ReadKey();
         }
     }

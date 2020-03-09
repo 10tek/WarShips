@@ -68,5 +68,64 @@ namespace WarShips.Services
                 player.Field[ship.Position[0, k], ship.Position[1, k]] = 1;
             }
         }
+
+        public void AttackAttemp(int x, int y)
+        {
+            //TODO
+            Console.SetCursorPosition(x, y);
+            Console.WriteLine(@"\");
+        }
+
+        public void MoveLeft(ref int x, ref int y)
+        {
+            Console.SetCursorPosition(x > 25 ? --x : x, y);
+        }
+
+        public void MoveRight(ref int x, ref int y)
+        {
+            Console.SetCursorPosition(x < 34 ? ++x : x, y);
+        }
+
+        public void MoveUp(ref int x, ref int y)
+        {
+            Console.SetCursorPosition(x, y > 1 ? --y : y);
+        }
+
+        public void MoveDown(ref int x, ref int y)
+        {
+            Console.SetCursorPosition(x, y < 10 ? y++ : y);
+        }
+
+        public void ControlCursor()
+        {
+            var x = 25;
+            var y = 1;
+
+            Console.SetCursorPosition(25, 1);
+            while (true)
+            {
+                var key = Console.ReadKey(true).Key;
+                if (key == ConsoleKey.LeftArrow)
+                {
+                    MoveLeft(ref x, ref y);
+                }
+                else if (key == ConsoleKey.RightArrow)
+                {
+                    MoveRight(ref x, ref y);
+                }
+                else if (key == ConsoleKey.UpArrow)
+                {
+                    MoveUp(ref x, ref y);
+                }
+                else if (key == ConsoleKey.DownArrow)
+                {
+                    MoveDown(ref x, ref y);
+                }
+                else if (key == ConsoleKey.Spacebar)
+                {
+                    AttackAttemp(x, y);
+                }
+            }
+        }
     }
 }
