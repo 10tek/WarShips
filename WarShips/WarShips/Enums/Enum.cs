@@ -6,7 +6,7 @@ namespace WarShips.Enums
 {
     public enum ShipType
     {
-        one,
+        one = 1,
         two,
         three,
         four
