@@ -24,12 +24,15 @@ namespace WarShips.Builders
 
         public IShip GetResult()
         {
-            return new Ship
-            {
-                Health = Ship.Health,
-                Position = Ship.Position,
-                ShipType = Ship.ShipType
-            };
+            if (Ship.Position != null && Ship.Health != 0)
+                return new Ship
+                {
+                    Health = Ship.Health,
+                    Position = Ship.Position,
+                    ShipType = Ship.ShipType
+                };
+            return null;
+
         }
     }
 }
