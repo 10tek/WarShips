@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using WarShips.Domain;
+using WarShips.Enums;
 
 namespace WarShips.Services
 {
@@ -30,6 +31,18 @@ namespace WarShips.Services
                 Console.Write(i);
                 Console.SetCursorPosition(35, i + 1);
                 Console.Write(i);
+            }
+        }
+
+        public void ShowPlayer(Player player)
+        {
+            for (var i = 0; i < FIELD_SIZE; i++)
+            {
+                for (var j = 0; j < FIELD_SIZE; j++)
+                {
+                    Console.Write(player.Field[i, j]);
+                }
+                Console.WriteLine();
             }
         }
 
@@ -69,6 +82,105 @@ namespace WarShips.Services
             }
         }
 
+        /// <summary>
+        /// Рандомное расположение кораблей
+        /// </summary>
+        /// <param name="player"></param>
+        public void RandomArrangement(Player player)
+        {
+            var ship = CreateShip(ShipType.Four);
+            player.PlaceShip(ship);
+            for (var i = 0; i < 2; i++)
+            {
+                ship = CreateShip(ShipType.Three);
+                while (!CanPlaceShip(player, ship))
+                {
+                    ship = CreateShip(ShipType.Three);
+                }
+                player.PlaceShip(ship);
+            }
+
+            for (var i = 0; i < 3; i++)
+            {
+                ship = CreateShip(ShipType.Two);
+                while (!CanPlaceShip(player, ship))
+                {
+                    ship = CreateShip(ShipType.Two);
+                }
+                player.PlaceShip(ship);
+            }
+
+
+            for (var i = 0; i < 4; i++)
+            {
+                ship = CreateShip(ShipType.One);
+                while (!CanPlaceShip(player, ship))
+                {
+                    ship = CreateShip(ShipType.One);
+                }
+                player.PlaceShip(ship);
+            }
+        }
+
+        /// <summary>
+        /// Создание корабля и его рандомное местоположение
+        /// </summary>
+        /// <param name="shipType"></param>
+        /// <returns></returns>
+        private Ship CreateShip(ShipType shipType)
+        {
+            var deckCount = (int)shipType;
+            var rand = new Random();
+            var ship = new Ship
+            {
+                ShipType = shipType,
+                Health = deckCount,
+                Position = new int[2, deckCount]
+            };
+            var x = rand.Next(deckCount - 1, FIELD_SIZE - deckCount + 1);
+            var y = rand.Next(deckCount - 1, FIELD_SIZE - deckCount + 1);
+            var direction = (Direction)rand.Next(0, 3);
+            for (var i = 0; i < deckCount; i++)
+            {
+                ship.Position[0, i] = x;
+                ship.Position[1, i] = y;
+                direction.Move(ref x, ref y);
+            }
+
+            return ship;
+        }
+
+        /// <summary>
+        /// Проверяет можно ли вставить корабль на карте игрока.
+        /// </summary>
+        /// <param name="player"></param>
+        /// <param name="ship"></param>
+        /// <returns></returns>
+        private bool CanPlaceShip(Player player, Ship ship)
+        {
+            for (var i = 0; i < (int)ship.ShipType; i++)
+            {
+                var x = ship.Position[0, i];
+                var y = ship.Position[1, i];
+                // проверка на соприкосновение с другими палубами
+                if (
+                    player.Field[x, y] == (int)Designation.Ship
+                    || (FIELD_SIZE > y + 1 && player.Field[x, y + 1] == (int)Designation.Ship)
+                    || (y > 0 && player.Field[x, y - 1] == (int)Designation.Ship)
+                    || (FIELD_SIZE > x + 1 && player.Field[x + 1, y] == (int)Designation.Ship)
+                    || (FIELD_SIZE > x + 1 && FIELD_SIZE > y + 1 && player.Field[x + 1, y + 1] == (int)Designation.Ship)
+                    || (FIELD_SIZE > x + 1 && y > 0 && player.Field[x + 1, y - 1] == (int)Designation.Ship)
+                    || (x > 0 && player.Field[x - 1, y] == (int)Designation.Ship)
+                    || (x > 0 && FIELD_SIZE > y + 1 && player.Field[x - 1, y + 1] == (int)Designation.Ship)
+                    || (x > 0 && y > 0 && player.Field[x - 1, y - 1] == (int)Designation.Ship)
+                    )
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
         public void AttackAttemp(int x, int y)
         {
             //TODO
@@ -100,7 +212,7 @@ namespace WarShips.Services
         {
             var x = 25;
             var y = 1;
-            
+
             Console.SetCursorPosition(25, 1);
             while (true)
             {

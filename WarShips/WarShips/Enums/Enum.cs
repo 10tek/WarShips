@@ -6,9 +6,20 @@ namespace WarShips.Enums
 {
     public enum ShipType
     {
-        one = 1,
-        two,
-        three,
-        four
+        One = 1,
+        Two,
+        Three,
+        Four
+    }
+
+    public enum Direction { Up, Right, Down, Left };
+
+    public enum Designation
+    {
+        Empty,
+        Ship,
+        Missed,
+        Injured,
+        Destroyed,
     }
 }
