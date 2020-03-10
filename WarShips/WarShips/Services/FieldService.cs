@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using WarShips.Builders;
 using WarShips.Domain;
 using WarShips.Enums;
 
@@ -88,37 +89,18 @@ namespace WarShips.Services
         /// <param name="player"></param>
         public void RandomArrangement(Player player)
         {
-            var ship = CreateShip(ShipType.Four);
-            player.PlaceShip(ship);
-            for (var i = 0; i < 2; i++)
+            var dict = new Dictionary<ShipType, int> { { ShipType.One, 4 }, { ShipType.Two, 3 }, { ShipType.Three, 2 }, { ShipType.Four, 1 } };
+            foreach (var item in dict)
             {
-                ship = CreateShip(ShipType.Three);
-                while (!CanPlaceShip(player, ship))
+                for (int i = 0; i < item.Value; i++)
                 {
-                    ship = CreateShip(ShipType.Three);
+                    Ship ship = CreateShip(item.Key);
+                    while (!CanPlaceShip(player, ship))
+                    {
+                        ship = CreateShip(item.Key);
+                    }
+                    player.PlaceShip(ship);
                 }
-                player.PlaceShip(ship);
-            }
-
-            for (var i = 0; i < 3; i++)
-            {
-                ship = CreateShip(ShipType.Two);
-                while (!CanPlaceShip(player, ship))
-                {
-                    ship = CreateShip(ShipType.Two);
-                }
-                player.PlaceShip(ship);
-            }
-
-
-            for (var i = 0; i < 4; i++)
-            {
-                ship = CreateShip(ShipType.One);
-                while (!CanPlaceShip(player, ship))
-                {
-                    ship = CreateShip(ShipType.One);
-                }
-                player.PlaceShip(ship);
             }
         }
 
@@ -131,23 +113,21 @@ namespace WarShips.Services
         {
             var deckCount = (int)shipType;
             var rand = new Random();
-            var ship = new Ship
-            {
-                ShipType = shipType,
-                Health = deckCount,
-                Position = new int[2, deckCount]
-            };
+            var builder = new ShipBuilder();
+            builder.BuildShipType(shipType);
+            var array = new int[2, deckCount];
             var x = rand.Next(deckCount - 1, FIELD_SIZE - deckCount + 1);
             var y = rand.Next(deckCount - 1, FIELD_SIZE - deckCount + 1);
             var direction = (Direction)rand.Next(0, 3);
             for (var i = 0; i < deckCount; i++)
             {
-                ship.Position[0, i] = x;
-                ship.Position[1, i] = y;
+                array[0, i] = x;
+                array[1, i] = y;
                 direction.Move(ref x, ref y);
             }
+            builder.BuildPosition(array);
 
-            return ship;
+            return builder.GetResult() as Ship;
         }
 
         /// <summary>

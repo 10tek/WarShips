@@ -9,7 +9,7 @@ namespace WarShips.Builders
 {
     public class ShipBuilder
     {
-        private readonly IShip Ship;
+        private readonly IShip Ship = new Ship();
 
         public void BuildShipType(ShipType shipType)
         {
